@@ -85,7 +85,7 @@ section {
     border-radius: .5rem;
     border: var(--border);
     text-align: center;
-    
+    box-sizing: border-box;
 }
 .btn,
 .inline-btn{
@@ -232,7 +232,11 @@ section {
     width: 6.5rem;
     border: var(--border);
 }
-
+.view-product .box-container .box.disabled{
+    opacity: .5;
+    pointer-events: none;
+    user-select: none;
+}
 @media(max-width: 991px){
     html{
         font-size: 55%;
