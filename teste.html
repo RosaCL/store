@@ -10,7 +10,7 @@
 <body>
         <header class="header">
         <section class="flex">
-            <a href="add_product.php">Logo</a>
+            <a class="logo" href="add_product.php"><i class="fa-regular fa-moon"></i></a>
             <nav class="navbar">
                 <a href="add_product.php"><i class="fas fa-plus"></i></a>
                 <a href="view_product.php"><i class="fas fa-eye"></i></a>
@@ -19,5 +19,56 @@
             </nav>
         </section>
     </header>
+    <section class="add-product">
+        <h1 class="heading">
+            Adicione o produto
+        </h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            <h3>Detalhes do produto</h3>
+            <p>nome do produto <span>*</span></p>
+            <input type="text" name="name" required maxlength="50" placeholder="Digite o nome do produto" class="input">
+            <p>preço do produto <span>*</span></p>
+            <input type="number" name="price" required maxlength="10" placeholder="Digite o preço do produto" min="0" max="9999999999" class="input">
+            <p>Estoque total<span>*</span></p>
+            <input type="number" name="stock" required maxlength="10" placeholder="Total de produtos em estoque" min="0" max="9999999999" class="input">
+            <p>Imagem do produto<span>*</span></p>
+            <input type="file" name="image" required accept="immage/*" class="input">
+            <input type="submit" value="Adicionar produto" name="add-product"  class="btn">
+        </form>
+    </section>
 </body>
 </html>
+
+
+if (isset($_POST['add-product'])){
+    $name = $_POST['name'];
+    $name = filter_var($name, FILTER_SANITIZE_STRING);
+    $price = $_POST['price'];
+    $price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $stock = $_POST['stock'];
+    $stock = filter_var($stock, FILTER_SANITIZE_NUMBER_INT);
+    
+    $image_name = $_FILES['image']['name'];
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_type = $_FILES['image']['type'];
+    $image_ext = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+    
+    $allowed_extensions = array('jpg', 'jpeg', 'png', 'gif');
+    
+    if(!in_array($image_ext, $allowed_extensions)){
+        $warning_msg[] = 'Tipo de arquivo não permitido!';
+    } elseif($image_size > 2000000){
+        $warning_msg[] = 'Imagem muito grande! Máximo 2MB';
+    } else {
+        $unique_name = uniqid() . '.' . $image_ext;
+        $image_folder = 'uplodes_files/' . $unique_name;
+        
+        $insert_product = $conn->prepare("INSERT INTO `products` (name, price, stock, image) VALUES (?, ?, ?, ?)");
+        $insert_product->execute([$name, $price, $stock, $unique_name]);
+        
+        move_uploaded_file($image_tmp_name, $image_folder);
+        $success_msg[] = 'Produto adicionado com sucesso';
+    }
+}
+?>

@@ -42,8 +42,7 @@ section {
 .heading{
     margin-bottom: 2.5rem;
     font-size: 2.5rem;
-    color: var(--black);
-    text-transform: capitalize;
+    color: var(--black);    t
     padding-bottom: 1.5rem;
     border-bottom: var(--border);
 }
@@ -126,7 +125,7 @@ section {
     justify-content: space-between;
 }
 
-.header .flex .logo{
+.header .flex .logo {
     font-size: 2.5rem;
     color: var(--main-color);
 }
@@ -145,4 +144,55 @@ section {
 
 .header .flex .navbar .cart-icon span{
     margin-left: .3rem;
+}
+.add-product form{
+    background-color: var(--white);
+    margin: 0 auto;
+    max-width: 50rem;
+    border-radius: .5rem;
+    padding: 2rem 5%;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+}
+.add-product form h3{
+    padding: 1rem 0;
+    font-size: 2.5rem;
+    color: var(--black);    
+    text-align: center;
+}
+.add-product form .input{
+    width: 100%;
+    border-radius: .5rem;
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    margin: 1rem 0;
+    background-color: var(--light-bg);
+    border: var(--border);
+}
+.add-product form p{
+    padding-top: 1rem;
+    font-size: 1.7rem;
+    color: var(--light-color);
+}
+.add-product form p span{
+    color: var(--red);
+    
+
+}
+
+@media(max-width: 991px){
+    html{
+        font-size: 55%;
+    }
+}
+@media(max-width: 450px){
+    html{
+        font-size: 50%;
+    }
+}
+@media(max-width: 450px){
+    html{
+        font-size: 50%;
+    }
 }
