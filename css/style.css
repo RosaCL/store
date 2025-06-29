@@ -42,7 +42,7 @@ section {
 .heading{
     margin-bottom: 2.5rem;
     font-size: 2.5rem;
-    color: var(--black);    t
+    color: var(--black);    
     padding-bottom: 1.5rem;
     border-bottom: var(--border);
 }
@@ -53,8 +53,7 @@ section {
     box-shadow: var(--box-shadow);
     padding: 1.5rem;
     font-size: 1.8rem;
-    color: var(--red);
-    text-transform: capitalize;
+    color: var(--red);    
     text-align: center;
     width: 100%;
     border-radius: .5rem;
@@ -86,7 +85,7 @@ section {
     border-radius: .5rem;
     border: var(--border);
     text-align: center;
-    text-transform: capitalize;
+    
 }
 .btn,
 .inline-btn{
@@ -176,9 +175,62 @@ section {
     color: var(--light-color);
 }
 .add-product form p span{
-    color: var(--red);
-    
+    color: var(--red); 
 
+}
+
+.view-product .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 35rem);
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.view-product .box-container .box{
+    background-color: var(--white);
+    border-radius: .5rem;
+    padding: 2rem 5%;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+}
+
+.view-product .box-container .box .image{
+    height: 20rem;
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 2rem;
+}
+
+.view-product .box-container .box .stock{
+    font-size: 1.6rem;
+    padding-bottom: 1rem;
+    display: block;
+}
+
+.view-product .box-container .box .name{
+    font-size: 2rem;
+    color: var(--black);
+    line-height: 1.5;
+}
+.view-product .box-container .box .flex{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.view-product .box-container .box .flex .price{
+    font-size: 1.8rem;
+    color: var(--red);
+    margin-right: auto;
+    padding: 1rem 0;
+}
+.view-product .box-container .box .qty{
+    padding: 1rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border-radius: .5rem;
+    width: 6.5rem;
+    border: var(--border);
 }
 
 @media(max-width: 991px){

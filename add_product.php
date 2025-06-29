@@ -1,62 +1,55 @@
 <?php
-    require_once '/laragon/www/store/components/conect.php';
+require_once '/laragon/www/store/components/conect.php';
+require_once '/laragon/www/store/components/alerts.php';
 
-if (isset($_POST['add-product'])){
+if (isset($_POST['add-product'])) {
     $id = create_unique_id();
-    $name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
-    $price = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $stock = filter_var($_POST['stock'], FILTER_SANITIZE_NUMBER_INT);
-    
-    $image_name = filter_var($_FILES['image']['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $ext = pathinfo($image_name, PATHINFO_EXTENSION);
-    $rename = create_unique_id(). '.'.$ext;
+    $name = $_POST['name'];
+    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+    $price = $_POST['price'];
+    $price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $stock = $_POST['stock'];
+    $stock = filter_var($stock, FILTER_SANITIZE_NUMBER_INT);
+    $image = $_FILES['image']['name'];
+    $image = htmlspecialchars($image, ENT_QUOTES, 'UTF-8');
+    $ext = pathinfo($image, PATHINFO_EXTENSION);
+    $rename = create_unique_id() . '.' . $ext;
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
-    
-    // Configuração do diretório de upload
-    $upload_dir = '../upload_files/';
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
+    $image_folder = __DIR__ . '/upload_files/' . $rename;
+    if (!is_dir(__DIR__ . '/upload_files')) {
+        mkdir(__DIR__ . '/upload_files', 0755, true);
     }
-    $image_folder = $upload_dir . $rename;
 
-    // Validações adicionais
-    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-    if(!in_array(strtolower($ext), $allowed_extensions)) {
-        $warning_msg[] = 'Tipo de arquivo não permitido!';
-    } elseif($image_size > 2000000) {
+
+    if ($image_size > 2000000) {
         $warning_msg[] = 'Imagem muito grande! Máximo 2MB';
     } else {
         $insert_product = $conn->prepare("INSERT INTO `products` (id, name, price, stock, image) VALUES (?, ?, ?, ?, ?)");
-        if($insert_product->execute([$id, $name, $price, $stock, $rename])) {
-            if(move_uploaded_file($image_tmp_name, $image_folder)) {
-                $success_msg[] = 'Produto adicionado com sucesso';
-            } else {
-                $warning_msg[] = 'Falha ao fazer upload da imagem';
-            }
-        } else {
-            $warning_msg[] = 'Falha ao adicionar produto';
-        }
+        $insert_product->execute([$id, $name, $price, $stock, $rename]);
+        move_uploaded_file($image_tmp_name, $image_folder);
+        $sucess_msg[] = 'Produto adicionado com sucesso';
     }
 }
-
 
 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
     <?php
-        include '/laragon/www/store/components/header.php';
+    include '/laragon/www/store/components/header.php';
     ?>
-        <section class="add-product">
+    <section class="add-product">
         <h1 class="heading">
             Adicione o produto
         </h1>
@@ -70,16 +63,16 @@ if (isset($_POST['add-product'])){
             <input type="number" name="stock" required maxlength="10" placeholder="Total de produtos em estoque" min="0" max="9999999999" class="input">
             <p>Imagem do produto<span>*</span></p>
             <input type="file" name="image" required accept="image/" class="input">
-            <input type="submit" value="Adicionar produto" name="add-product"  class="btn">
+            <input type="submit" value="Adicionar produto" name="add-product" class="btn">
         </form>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js">
-
     </script>
     <script src="../js/script.js"></script>
     <?php
     include '/laragon/www/store/components/alerts.php';
     ?>
 </body>
+
 </html>
