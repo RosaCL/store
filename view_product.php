@@ -63,7 +63,6 @@ if(isset($_POST['add_to_cart'])){
             Todos os produtos
         </h1>
         <div class="box-container">
-           
                 <?php
                 $select_products = $conn->prepare("SELECT * FROM `products`");
                 $select_products->execute();
